@@ -1,15 +1,3 @@
-<style>
-  h1 {
-    font-size: 24px;
-  }
-  h2 {
-    font-size: 20px;
-  }
-  p {
-    font-size: 16px;
-  }
-</style>
-
 # rsg-random-string-generator :speech_balloon:
 
 > Small application to generate files with random unique strings
