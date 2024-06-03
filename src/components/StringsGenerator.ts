@@ -4,9 +4,8 @@ class StringsGenerator {
 	private _characters: string;
 
 	constructor(minLength: number, maxLength: number, characters: string) {
-		this.createListOfAllRequiredStringsLengths(minLength, maxLength);
-		console.log('this._allRequiredLengths: ', this._allRequiredLengths);
 		this._characters = characters;
+		this.createListOfAllRequiredStringsLengths(minLength, maxLength);
 	}
 
 	public generateStrings = (): void => {
