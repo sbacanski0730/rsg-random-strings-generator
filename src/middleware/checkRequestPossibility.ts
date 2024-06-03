@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from 'express';
 const checkRequestPossibility = (req: Request, res: Response, next: NextFunction) => {
 	const { characters, combinations, minLength, maxLength } = res.locals;
 
+	// REFACTOR: refactor this function to optimize
+
 	const MAXIMUM_POSSIBLE_PERMUTATIONS = possiblePermutationsForAllLengths(characters, minLength, maxLength);
 
 	if (minLength > maxLength)
