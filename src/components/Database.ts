@@ -1,13 +1,13 @@
 import { Redis, RedisOptions } from 'ioredis';
 import Log from '../utils/Log';
+import { DB_URL } from '../../config';
 
 // REFACTOR: this file looks ugly - make it pretty
 // but works XD
 
 const DATA_KEYS_EXPIRATION_TIME: number = 1800; // in seconds
 
-const dbURL: string =
-	'rediss://default:AbK6AAIncDFjZDE4NDE0MGUwZTE0NTJiYmNlOGRhMWFlYjY0OTZjMnAxNDU3NTQ@crisp-redfish-45754.upstash.io:6379';
+const dbURL: string = DB_URL;
 
 const databaseConfig: RedisOptions = {
 	lazyConnect: true, // if this option is true, Redis server will be connected only after calling the function
