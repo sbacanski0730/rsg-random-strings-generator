@@ -23,6 +23,7 @@ const generateStringRequestSchema = v.object({
 		v.minValue(1, 'Value for this property has to by more than 0. Otherwise, the request is meaningless.'),
 	]),
 });
+export type GeneratedStringsInput = v.Input<typeof generateStringRequestSchema>;
 
 export const validateGenerateStringsFile = (req: Request, res: Response, next: NextFunction) => {
 	try {
