@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import * as v from 'valibot';
-import Log from './Log';
+import ErrorResponses from './ErrorResponses';
 
 const generateStringRequestSchema = v.object({
 	lengths: v.object({
@@ -29,7 +29,6 @@ export const validateGenerateStringsFile = (req: Request, res: Response, next: N
 		v.parse(generateStringRequestSchema, req.body);
 		next();
 	} catch (err) {
-		Log.error(err);
-		return res.status(400).send('Wrong request content');
+		return ErrorResponses.ERROR_WRONG_REQUEST_CONTENT.sendAsResponse(res);
 	}
 };

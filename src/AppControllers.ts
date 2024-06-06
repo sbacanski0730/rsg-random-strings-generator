@@ -3,6 +3,7 @@ import StringsGenerator from './components/StringsGenerator';
 import Database from './components/Database';
 import { nanoid } from 'nanoid';
 import Log from './utils/Log';
+import ErrorResponses from './utils/ErrorResponses';
 
 class AppControllers {
 	public generateStringsFileHandler = (req: Request, res: Response) => {
@@ -27,18 +28,13 @@ class AppControllers {
 	public returnGeneratedFileHandler = async (req: Request, res: Response) => {
 		const id = req.params.id;
 
-		try {
-			const db = Database.connect();
+		const db = Database.connect();
 
-			const generatedStrings = await db.get(id);
+		const generatedStrings = await db.get(id);
 
-			if (!generatedStrings) return res.status(400).send('Something went wrong');
+		if (!generatedStrings) return ErrorResponses.ERROR_INVALID_ID_OR_STRINGS_RECEIVED;
 
-			res.status(200).send(generatedStrings.replaceAll(',', '\n'));
-		} catch (error: any) {
-			Log.error(error);
-			// TODO: put here some response with error
-		}
+		return res.status(200).send(generatedStrings.replaceAll(',', '\n'));
 	};
 }
 

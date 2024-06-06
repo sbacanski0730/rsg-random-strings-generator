@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import ErrorResponses from '../utils/ErrorResponses';
 
 const checkRequestPossibility = (req: Request, res: Response, next: NextFunction) => {
 	const { characters, combinations, minLength, maxLength } = res.locals;
@@ -7,16 +8,13 @@ const checkRequestPossibility = (req: Request, res: Response, next: NextFunction
 
 	const MAXIMUM_POSSIBLE_PERMUTATIONS = possiblePermutationsForAllLengths(characters, minLength, maxLength);
 
-	if (minLength > maxLength)
-		return res.status(400).send('Request impossible to complete. Provided data are incompatible.');
+	if (minLength > maxLength) return ErrorResponses.ERROR_INCOMPATIBLE_DATA.sendAsResponse(res);
 
-	if (maxLength > characters.length)
-		return res.status(400).send('Request impossible to complete. Provided data are incompatible.');
+	if (maxLength > characters.length) return ErrorResponses.ERROR_INCOMPATIBLE_DATA.sendAsResponse(res);
 
-	if (combinations > MAXIMUM_POSSIBLE_PERMUTATIONS)
-		return res.status(400).send('Request impossible to complete. Provided data are incompatible.');
+	if (combinations > MAXIMUM_POSSIBLE_PERMUTATIONS) return ErrorResponses.ERROR_INCOMPATIBLE_DATA.sendAsResponse(res);
 
-	if (minLength < 1) return res.status(400).send('Request impossible to complete. Provided data are incompatible.');
+	if (minLength < 1) return ErrorResponses.ERROR_INCOMPATIBLE_DATA.sendAsResponse(res);
 
 	return next();
 };
