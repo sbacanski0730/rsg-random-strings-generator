@@ -8,13 +8,18 @@ class StringsGenerator {
 		this.createListOfAllRequiredStringsLengths(minLength, maxLength);
 	}
 
-	public generateStrings = (): void => {
+	public generateStrings = (combinations: number): Array<string> => {
+		this.generatePermutations();
+		return this.getRandomStrings(combinations);
+	};
+
+	private generatePermutations = (): void => {
 		this._allRequiredLengths.forEach((length) =>
 			this._allPossibleStringsPermutations.push(...this.createPermutations(this._characters, length))
 		);
 	};
 
-	public getRandomStrings = (combinations: number): Array<string> => {
+	private getRandomStrings = (combinations: number): Array<string> => {
 		let randomStrings: Array<string> = [];
 
 		for (let i = 0; i < combinations; i++)
