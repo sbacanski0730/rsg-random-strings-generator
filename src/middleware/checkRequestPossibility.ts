@@ -1,10 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import ErrorResponses from '../utils/ErrorResponses';
 
-const checkRequestPossibility = (req: Request, res: Response, next: NextFunction) => {
+const checkRequestPossibility = (_: Request, res: Response, next: NextFunction) => {
 	const { characters, combinations, minLength, maxLength } = res.locals;
-
-	// REFACTOR: refactor this function to optimize
 
 	const MAXIMUM_POSSIBLE_PERMUTATIONS = possiblePermutationsForAllLengths(characters, minLength, maxLength);
 
@@ -22,7 +20,7 @@ const checkRequestPossibility = (req: Request, res: Response, next: NextFunction
 export default checkRequestPossibility;
 
 const possiblePermutationsForAllLengths = (chars: string, minLength: number, maxLength: number): number => {
-	let range = [];
+	let range: Array<number> = [];
 
 	if (minLength === maxLength) range.push(minLength);
 
@@ -33,8 +31,8 @@ const possiblePermutationsForAllLengths = (chars: string, minLength: number, max
 		.reduce((acc, curr) => (acc = acc + curr));
 };
 
-const countPermutationsWithoutRepetitions = (numberOfAllChars: number, permutationsLength: number): number => {
-	return fac(numberOfAllChars) / fac(numberOfAllChars - permutationsLength);
+const countPermutationsWithoutRepetitions = (numberOfAllChars: number, permutationLength: number): number => {
+	return fac(numberOfAllChars) / fac(numberOfAllChars - permutationLength);
 };
 
 const fac = (num: number): number => {
