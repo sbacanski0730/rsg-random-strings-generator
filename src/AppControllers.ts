@@ -10,7 +10,7 @@ class AppControllers {
 
 		const randomStrings = new StringsGenerator(minLength, maxLength, characters).generateStrings(combinations);
 
-		const database = Database.connect();
+		const database = Database.instance;
 		const keyId = nanoid();
 		database.set(keyId, randomStrings.toString());
 
@@ -22,7 +22,7 @@ class AppControllers {
 	public returnGeneratedFileHandler = async (req: Request, res: Response) => {
 		const id = req.params.id;
 
-		const db = Database.connect();
+		const db = Database.instance;
 
 		const generatedStrings = await db.get(id);
 
