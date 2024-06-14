@@ -28,6 +28,8 @@ class Database {
 		this._redis.set(key, value, 'EX', DB_GENERATED_STRINGS_EXPIRATION_TIME);
 
 	public get = async (key: string): Promise<string | null> => {
+		if ((await this._redis.exists(key)) !== 1) return null;
+
 		const pipeline = await this._redis
 			.pipeline()
 			.get(key)
