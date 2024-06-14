@@ -2,34 +2,41 @@ import { Redis, RedisOptions } from 'ioredis';
 import Log from '../utils/Log';
 import { DB_URL, DB_GENERATED_STRINGS_EXPIRATION_TIME } from '../../config';
 
-// REFACTOR: this file looks ugly - make it pretty
-// but works XD
-
 const databaseConfig: RedisOptions = {
-	lazyConnect: true, // if this option is true, Redis server will be connected only after calling the function
+	lazyConnect: true,
 };
 
 class Database {
-	private static _database: Database;
+	private static _instance: Database;
 	private _redis: Redis;
 
-	// DOUBT: is it a good idea to try recreate constructor to work like now separate static function connect()
 	private constructor() {
 		this.createDatabase();
 	}
 
-	public static connect() {
-		if (!Database._database) Database._database = new Database();
+	public static connect = () => {
+		Database.instance;
+	};
 
-		return Database._database;
+	public static get instance() {
+		if (!Database._instance) Database._instance = new Database();
+
+		return Database._instance;
 	}
 
 	public set = (key: string, value: string): Promise<'OK'> =>
 		this._redis.set(key, value, 'EX', DB_GENERATED_STRINGS_EXPIRATION_TIME);
 
 	public get = async (key: string): Promise<string | null> => {
-		// TODO: add here option deleting founded value by given key
-		const pipeline = await this._redis.pipeline().get(key).exec();
+		if ((await this._redis.exists(key)) !== 1) return null;
+
+		const pipeline = await this._redis
+			.pipeline()
+			.get(key)
+			.del(key)
+			.exec((err) => {
+				if (err) return null;
+			});
 
 		if (!pipeline) return null;
 
@@ -39,8 +46,6 @@ class Database {
 
 		return strings as string;
 	};
-
-	public info = (): Promise<string> => this._redis.info();
 
 	private createDatabase = async () => {
 		try {
