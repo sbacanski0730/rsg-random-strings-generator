@@ -2,9 +2,10 @@ import express, { Application } from 'express';
 import AppRoutes from './AppRoutes';
 import Log from './utils/Log';
 import Database from './components/Database';
+import { PORT } from '../config';
 
 class App {
-	private _PORT: Number = 5016;
+	private _PORT: number = Number(PORT) || 5016;
 
 	private _app: Application = express();
 	private _appRoutes: AppRoutes = new AppRoutes();

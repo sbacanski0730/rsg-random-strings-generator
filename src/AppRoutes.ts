@@ -28,10 +28,16 @@ class AppRoutes {
 			);
 
 		app.route(CURRENTLY_RUNNING_OPERATIONS_ENDPOINT_PATH) //
-			.get(this.appControllers.currentlyRunningOperationsHandler);
+			.get(
+				//
+				this.appControllers.currentlyRunningOperationsHandler
+			);
 
 		app.route(RETURN_GENERATED_FILE_ENDPOINT_PATH) //
-			.get(this.appControllers.returnGeneratedFileHandler);
+			.get(
+				//
+				this.appControllers.returnGeneratedFileHandler
+			);
 	};
 }
 
