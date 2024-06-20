@@ -1,4 +1,4 @@
-bbb# rsg-random-strings-generator :speech_balloon:
+# rsg-random-strings-generator :speech_balloon:
 
 > Small application to generate random unique strings. :taco: :bomb:
 
