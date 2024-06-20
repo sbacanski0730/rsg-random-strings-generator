@@ -96,15 +96,15 @@ Application should be able to inform about the number of the operations it is cu
 
 1.  Clone the repository
 
-```bash
-    git clone https://github.com/sbacanski0730/rsg-random-strings-generator.git
-```
+    ```
+        git clone https://github.com/sbacanski0730/rsg-random-strings-generator.git
+    ```
 
 2.  Change the working directory
 
-```bash
-    cd rsg-random-strings-generator
-```
+    ```
+        cd rsg-random-strings-generator
+    ```
 
 3.  Create `.env` file
 4.  Provide configuration content for application
@@ -119,30 +119,165 @@ Application should be able to inform about the number of the operations it is cu
 
     Example `.env` file:
 
-```bash
-    PORT = 5017
-    DB_URL = redis://:authpassword@127.0.0.1:6380/4
-    DB_GENERATED_STRINGS_EXPIRATION_TIME = 1800
-```
+    ```
+        PORT = 5017
+        DB_URL = redis://:authpassword@127.0.0.1:6380/4
+        DB_GENERATED_STRINGS_EXPIRATION_TIME = 1800
+    ```
 
 5.  Install dependencies
 
-```bash
-    npm install
-```
+    ```
+        npm install
+    ```
 
 6.  Run the application in developer mode
 
-```bash
-    npm run dev
-```
+    ```
+        npm run dev
+    ```
 
-7. To run test
+7.  To run test
 
-```bash
-    npm run test
-```
+    ```
+        npm run test
+    ```
 
 **:sparkler: All set!**
 
 > You can use the script contained in the `setup.sh` file to install and run application [**with Git Bash**]
+
+### Custom WLAN REDIS database
+
+Two redis databases was created for this project. </br>
+The first one on the [Upstash.com](https://upstash.com/) platform, the second one on **Raspberry Pi Zero 2 W**. This database was created manually through WiFi connection by **SSH**.
+
+The way in which the local database was created is presented below.
+
+> <ins>Raspberry Pi OS Lite (64-bit)</ins> has been installed on the **Raspberry Pi Zero 2 W** with options allowing for WiFi and SSH connection.
+
+1.  Check connection with device and connect via SSH.
+
+    For this the IP address of feature database host is needed.
+
+    > Connection check:
+
+    ```
+        ping <ip_address>
+    ```
+
+    > SSH connection:
+
+    ```
+        ssh <hostname>@<ip_address>
+        [password if needed]
+    ```
+
+    ![Database on Raspberry - 1 - Connecting Device](https://github.com/sbacanski0730/rsg-random-strings-generator/assets/72625642/8d4a995a-3c20-448d-9645-7696147768dd)
+
+2.  Instal redis on database host.
+
+    > Update and upgrade device:
+
+    ```
+        sudo apt update
+        sudo apt upgrade
+    ```
+
+    > Install redis:
+
+    ```
+        sudo apt install redis
+    ```
+
+    > Reboot linux and connect via SSH again:
+
+    ```
+        sudo reboot
+    ```
+
+3.  Configure redis setting
+
+    > Go into redis configuration file:
+
+    ```
+        sudo nano /etc/redis/redis.conf
+    ```
+
+    > And change three parameters:
+
+    -   ```bash
+        bind 127.0.0.1 [ip_address_of_database_host] -::1
+        ```
+
+        Pre existing IP address (**127.0.0.1** and **-::1**) need to stay. They are needed to local connections.
+
+        ![Database on Raspberry - 2 - Adding Database's Host IP Address](https://github.com/sbacanski0730/rsg-random-strings-generator/assets/72625642/8cd68ba1-f45c-475a-8bbd-d5202ae744a9)
+
+    -   ```bash
+        requirepass [password]
+        ```
+
+        Password is needed for safe connection to database.
+
+        ![Database on Raspberry - 3 - Setting Password](https://github.com/sbacanski0730/rsg-random-strings-generator/assets/72625642/75107cc1-bb5d-43d5-95af-8e787ca9147a)
+
+    -   ```bash
+        protected-mode no
+        ```
+
+        Without this setting no outside connection can't be established.
+
+        ![Database on Raspberry - 4 - Setting protected-mode](https://github.com/sbacanski0730/rsg-random-strings-generator/assets/72625642/cd0ceac1-0e77-463e-9b5e-6a2b659a028c)
+
+    > **At the end for proper database set up it needs to be restart device again: `sudo reboot`.**
+
+4.  Start Redis Database
+
+    Command `redis-server` starts Redis database.
+
+    ```
+        redis-server
+    ```
+
+    ![Database on Raspberry - 5 - Starting Database](https://github.com/sbacanski0730/rsg-random-strings-generator/assets/72625642/84eeeec9-02eb-4230-86e7-d8b2de6a8b87)
+
+5.  Create Database URL - WLAN Database Connection Address
+
+    After setting configuration for redis database is ready. To connect with database special URL address is needed. It can be created by using URL schedule.
+
+    <div style="display: flex; justify-content: center; font-size: 22px;letter-spacing: 0.8px; margin-block: 18px;">
+                redis[s]://[[username][:password]@][host][:port][/db-number]:
+    </div>
+
+    -   <span style="font-size: 21px;">redis[s]</span> - this element is the main part of the URL; it's provides information that this address leads to redis database.
+        -   `redis://` - if connecting to Redis standalone, unencrypted
+        -   `rediss://` - if connecting to Redis standalone, with TLS encryption
+    -   <span style="font-size: 21px;">[username]</span> - this value in the username in which database is located. Creating the user is not mandatory. Without creating the user and with set password on database the URL needs to contain `default` as a username.
+    -   <span style="font-size: 21px;">[:password]</span> - password is needed for security purposes.
+    -   <span style="font-size: 21px;">[host]</span> - if database is not deployed in any way this value is just IP address of the host in WLAN network.
+    -   <span style="font-size: 21px;">[:post]</span> - by default redis database is accessible on port **6379**, this can be change in the same way like setting the password inside `/etc/redis/redis.conf`
+    -   <span style="font-size: 21px;">[/db-number]</span> - in case when there are more than one database on the device with this value possible is to choose which one to connect
+
+    At the end the URL for created database can look like this:
+    <div style="display: flex; justify-content: center; font-size: 22px;letter-spacing: 0.8px; margin-block: 18px;">
+                redis://default:piredis@192.168.1.149:6379/
+    </div>
+
+    -   <span style="font-size:15px">`redis://`</span> - database is in standalone mode and isn't encrypted
+    -   <span style="font-size:15px">`default`</span> - this's the default name for the username
+
+    -   <span style="font-size:15px">`piredis`</span> - database password
+    -   <span style="font-size:15px">`192.168.1.149`</span> - device's IP address in WLAN
+    -   <span style="font-size:15px">`6379`</span> - default port number
+
+    > No database number because in this case there is only one database.
+
+6.  Connect to database
+
+    In this project connection with redis database was established with **ioredis** library.
+
+    ![Database on Raspberry - 6 - Connecting Database](https://github.com/sbacanski0730/rsg-random-strings-generator/assets/72625642/9989c6e7-a974-4234-b98f-92de198fb57e)
+
+    Connecting application with database base on creating Redis object which takes URL address as its property.
+    If connection to database ends successfully callback will print "Database connected" in application terminal.
