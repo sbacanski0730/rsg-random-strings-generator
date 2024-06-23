@@ -111,7 +111,7 @@ Application should be able to inform about the number of the operations it is cu
 
     To install the application correctly, you must create an `.env` file and enter environment variables into it.
 
-    This file should contains three variables:
+    `.env` file should contains three variables:
 
     -   **PORT** - port number on which application will be running
     -   **DB_URL** - address of REDIS database; this address can originate from local database or other services providing redis databases.
@@ -149,8 +149,10 @@ Application should be able to inform about the number of the operations it is cu
 
 ### Custom WLAN REDIS database
 
-Two redis databases was created for this project. </br>
-The first one on the [Upstash.com](https://upstash.com/) platform, the second one on **Raspberry Pi Zero 2 W**. This database was created manually through WiFi connection by **SSH**.
+Two Redis databases was created for this project. </br>
+The first one was created on the [Upstash.com](https://upstash.com/) platform, the second one on **Raspberry Pi Zero 2 W**. This database was created manually through WiFi connection by **SSH**.
+
+![Raspberry Pi Zero 2 W with installed Raspberry Pi OS Lite](https://github.com/sbacanski0730/rsg-random-strings-generator/assets/72625642/7e39ff8b-c217-4b92-8acf-7cd5bf984559)
 
 The way in which the local database was created is presented below.
 
@@ -175,7 +177,7 @@ The way in which the local database was created is presented below.
 
     ![Database on Raspberry - 1 - Connecting Device](https://github.com/sbacanski0730/rsg-random-strings-generator/assets/72625642/8d4a995a-3c20-448d-9645-7696147768dd)
 
-2.  Instal redis on database host.
+2.  Instal Redis on database host.
 
     > Update and upgrade device:
 
@@ -184,7 +186,7 @@ The way in which the local database was created is presented below.
         sudo apt upgrade
     ```
 
-    > Install redis:
+    > Install Redis:
 
     ```
         sudo apt install redis
@@ -196,7 +198,7 @@ The way in which the local database was created is presented below.
         sudo reboot
     ```
 
-3.  Configure redis setting
+3.  Configure Redis setting
 
     > Go into redis configuration file:
 
@@ -244,10 +246,10 @@ The way in which the local database was created is presented below.
 
 5.  Create Database URL - WLAN Database Connection Address
 
-    After setting configuration for redis database is ready. To connect with database special URL address is needed. It can be created by using URL schedule.
+    After setting configuration for redis database is ready. To connect with database special URL address is needed. It can be created by using URL pattern:
 
     <div style="display: flex; justify-content: center; font-size: 22px;letter-spacing: 0.8px; margin-block: 18px;">
-                redis[s]://[[username][:password]@][host][:port][/db-number]:
+    redis[s]://[[username][:password]@][host][:port][/db-number]
     </div>
 
     -   <span style="font-size: 21px;">redis[s]</span> - this element is the main part of the URL; it's provides information that this address leads to redis database.
@@ -275,7 +277,7 @@ The way in which the local database was created is presented below.
 
 6.  Connect to database
 
-    In this project connection with redis database was established with **ioredis** library.
+    In this project connection with Redis database was established with **ioredis** library.
 
     ![Database on Raspberry - 6 - Connecting Database](https://github.com/sbacanski0730/rsg-random-strings-generator/assets/72625642/9989c6e7-a974-4234-b98f-92de198fb57e)
 
