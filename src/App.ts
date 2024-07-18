@@ -32,6 +32,10 @@ class App {
 	private listen = (): void => {
 		this._app.listen(this._PORT, () => Log.info(`Server is listening at port ${this._PORT}`));
 	};
+
+	get app(): Application {
+		return this._app;
+	}
 }
 
 export default App;

@@ -22,6 +22,7 @@ class AppControllers {
 	public returnGeneratedFileHandler = async (req: Request, res: Response) => {
 		const db = Database.instance;
 
+
 		const generatedStrings = await db.get(req.params.id);
 
 		if (!generatedStrings) return ErrorResponses.ERROR_INVALID_ID_OR_STRINGS_RECEIVED;
