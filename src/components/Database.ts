@@ -48,12 +48,8 @@ class Database {
 	};
 
 	private createDatabase = async () => {
-		try {
-			this._redis = new Redis(DB_URL, databaseConfig);
-			this._redis.connect(() => Log.info('Database connected'));
-		} catch (error) {
-			Log.error(error);
-		}
+		this._redis = new Redis(DB_URL, databaseConfig);
+		this._redis.connect(() => Log.info('Database connected'));
 	};
 }
 

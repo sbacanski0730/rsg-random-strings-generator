@@ -24,11 +24,13 @@ class AppControllers {
 
 		const db = Database.instance;
 
-		const generatedStrings = await db.get(id);
+		// const generatedStrings: Array<string> | null = await db.get(id);
+		const generatedStrings: string | null = await db.get(id);
 
 		if (!generatedStrings) return ErrorResponses.ERROR_INVALID_ID_OR_STRINGS_RECEIVED;
 
 		return res.status(200).send(generatedStrings.replaceAll(',', '\n'));
+		// return res.status(200).send(generatedStrings);
 	};
 }
 
