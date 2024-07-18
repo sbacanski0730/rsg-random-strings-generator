@@ -20,17 +20,16 @@ class AppControllers {
 	public currentlyRunningOperationsHandler = (req: Request, res: Response) => {};
 
 	public returnGeneratedFileHandler = async (req: Request, res: Response) => {
-		const id = req.params.id;
-
 		const db = Database.instance;
 
-		// const generatedStrings: Array<string> | null = await db.get(id);
-		const generatedStrings: string | null = await db.get(id);
+
+		const generatedStrings = await db.get(req.params.id);
 
 		if (!generatedStrings) return ErrorResponses.ERROR_INVALID_ID_OR_STRINGS_RECEIVED;
 
-		return res.status(200).send(generatedStrings.replaceAll(',', '\n'));
-		// return res.status(200).send(generatedStrings);
+		await db.delete(req.params.id);
+
+		return res.status(200).send(generatedStrings.split(','));
 	};
 }
 
