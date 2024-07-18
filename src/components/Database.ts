@@ -1,14 +1,12 @@
-import { Redis, RedisOptions } from 'ioredis';
-import Log from '../utils/Log';
+import { createClient, RedisClientType } from 'redis';
 import { DB_URL, DB_GENERATED_STRINGS_EXPIRATION_TIME } from '../../config';
+import Log from '../utils/Log';
 
-const databaseConfig: RedisOptions = {
-	lazyConnect: true,
-};
-
+// TODO: database obj to refactor - this singleton implementation is ugly - make it pretty
+// REFACTOR: refactor database class so it will return instance - like [ export default Database.instance(); ]
 class Database {
 	private static _instance: Database;
-	private _redis: Redis;
+	private _redisClient: RedisClientType;
 
 	private constructor() {
 		this.createDatabase();
@@ -24,37 +22,27 @@ class Database {
 		return Database._instance;
 	}
 
-	public set = (key: string, value: string): Promise<'OK'> =>
-		this._redis.set(key, value, 'EX', DB_GENERATED_STRINGS_EXPIRATION_TIME);
+	public set = async (key: string, value: string): Promise<string | null> => {
+		return await this._redisClient.set(key, value, { EX: Number(DB_GENERATED_STRINGS_EXPIRATION_TIME) });
+	};
 
 	public get = async (key: string): Promise<string | null> => {
-		if ((await this._redis.exists(key)) !== 1) return null;
+		return await this._redisClient.get(key);
+	};
 
-		const pipeline = await this._redis
-			.pipeline()
-			.get(key)
-			.del(key)
-			.exec((err) => {
-				if (err) return null;
-			});
-
-		if (!pipeline) return null;
-
-		const [[err, strings]] = pipeline;
-
-		if (err) return null;
-
-		return strings as string;
+	public delete = async (key: string): Promise<number> => {
+		return await this._redisClient.del(key);
 	};
 
 	private createDatabase = async () => {
-		try {
-			this._redis = new Redis(DB_URL, databaseConfig);
-			this._redis.connect(() => Log.info('Database connected'));
-		} catch (error) {
-			Log.error(error);
-		}
+		this._redisClient = createClient({ url: DB_URL });
+		this._redisClient.on('connect', () => Log.info('Database connected'));
+		await this._redisClient.connect();
 	};
 }
 
 export default Database;
+
+// in case of refactoring database and adding errors validation
+// https://redis.io/docs/latest/develop/connect/clients/nodejs/
+// https://stackoverflow.com/questions/70805943/redis-redis-createclient-in-typescript
