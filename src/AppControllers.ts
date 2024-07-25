@@ -17,11 +17,12 @@ class AppControllers {
 		return res.status(200).setHeader('Request-Generation-Id', keyId).send('Request Accepted');
 	};
 
-	public currentlyRunningOperationsHandler = (req: Request, res: Response) => {};
+	public currentlyRunningOperationsHandler = (req: Request, res: Response) => {
+		// TODO: find a way to check currently running operations in the server to provide this functionality
+	};
 
 	public returnGeneratedFileHandler = async (req: Request, res: Response) => {
 		const db = Database.instance;
-
 
 		const generatedStrings = await db.get(req.params.id);
 

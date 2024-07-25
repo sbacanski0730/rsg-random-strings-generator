@@ -1,3 +1,5 @@
+// TODO: create unit tests for this class as this class contains main functionality of the project
+
 class StringsGenerator {
 	private _allRequiredLengths: Array<number> = [];
 	public _allPossibleStringsPermutations: Array<string> = [];
