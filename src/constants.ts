@@ -1,3 +1,3 @@
-export const GENERATE_STRINGS_ENDPOINT_PATH = '/api/generate-strings/';
-export const CURRENTLY_RUNNING_OPERATIONS_ENDPOINT_PATH = '/api/currently-running-operations/';
-export const RETURN_GENERATED_FILE_ENDPOINT_PATH = '/api/return-generated-strings/:id';
+export const ENDPOINT_PATH_GENERATE_STRINGS = '/api/generate-strings/';
+export const ENDPOINT_PATH_CURRENTLY_RUNNING_OPERATIONS = '/api/currently-running-operations/';
+export const ENDPOINT_PATH_RETURN_GENERATED_FILE = '/api/return-generated-strings/:id';
