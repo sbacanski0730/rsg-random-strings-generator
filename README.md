@@ -137,17 +137,11 @@ Application should be able to inform about the number of the operations it is cu
         npm run dev
     ```
 
-7.  To run test
+<!-- **:sparkler: All set!**
 
-    ```
-        npm run test
-    ```
+> You can use the script contained in the `setup.sh` file to install and run application [**with Git Bash**] -->
 
-**:sparkler: All set!**
-
-> You can use the script contained in the `setup.sh` file to install and run application [**with Git Bash**]
-
-### Custom WLAN REDIS database
+# Custom WLAN REDIS database
 
 Two Redis databases was created for this project. </br>
 The first one was created on the [Upstash.com](https://upstash.com/) platform, the second one on **Raspberry Pi Zero 2 W**. This database was created manually through WiFi connection by **SSH**.
