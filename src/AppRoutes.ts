@@ -1,22 +1,37 @@
 import { Application } from 'express';
 import AppControllers from './AppControllers';
+import { validateGenerateStringsFile as validateGenerateStringsEndpoint } from './utils/requestsValidation';
+import unpackRequestBody from './middleware/unpackRequestBody';
 
-const GENERATE_STRING_ENDPOINT_PATH = '/api/generate-strings-file/';
-const CURRENTLY_RUNNING_OPERATIONS_ENDPOINT_PATH = '/api/currently-running-operations/';
-const RETURN_GENERATED_FILE_ENDPOINT_PATH = '/api/return-generated-files/:id';
+import {
+	ENDPOINT_PATH_GENERATE_STRINGS,
+	ENDPOINT_PATH_CURRENTLY_RUNNING_OPERATIONS,
+	ENDPOINT_PATH_RETURN_GENERATED_FILE,
+} from './constants';
+import checkRequestPossibility from './middleware/checkRequestPossibility';
 
 class AppRoutes {
 	private appControllers = new AppControllers();
 
 	public createAppRoutes = (app: Application): void => {
-		app.route(GENERATE_STRING_ENDPOINT_PATH) //
-			.post(this.appControllers.generateStringsFileHandler);
+		app.route(ENDPOINT_PATH_GENERATE_STRINGS) //
+			.post(
+				//
+				[validateGenerateStringsEndpoint, unpackRequestBody, checkRequestPossibility],
+				this.appControllers.generateStringsFileHandler
+			);
 
-		app.route(CURRENTLY_RUNNING_OPERATIONS_ENDPOINT_PATH) //
-			.get(this.appControllers.currentlyRunningOperationsHandler);
+		app.route(ENDPOINT_PATH_CURRENTLY_RUNNING_OPERATIONS) //
+			.get(
+				//
+				this.appControllers.currentlyRunningOperationsHandler
+			);
 
-		app.route(RETURN_GENERATED_FILE_ENDPOINT_PATH) //
-			.get(this.appControllers.returnGeneratedFileHandler);
+		app.route(ENDPOINT_PATH_RETURN_GENERATED_FILE) //
+			.get(
+				//
+				this.appControllers.returnGeneratedFileHandler
+			);
 	};
 }
 
