@@ -4,7 +4,6 @@ import { Response } from 'express';
 
 // NOTE: is it possible to create something like class ErrorResponse extends Response?
 // NOTE: this could be very helpful - just call 'send()' at the end of the ErrorResponse to send response
-
 class ErrorResponses {
 	private _status: number;
 	private _message: string;

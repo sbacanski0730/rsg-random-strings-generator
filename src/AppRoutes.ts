@@ -27,6 +27,7 @@ class AppRoutes {
 				this.appControllers.generateStringsFileHandler
 			);
 
+
 		app.route(CURRENTLY_RUNNING_OPERATIONS_ENDPOINT_PATH) //
 			.get(
 				//

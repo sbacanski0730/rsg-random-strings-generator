@@ -4,6 +4,7 @@ import Log from '../utils/Log';
 
 // TODO: database obj to refactor - this singleton implementation is ugly - make it pretty
 // REFACTOR: refactor database class so it will return instance - like [ export default Database.instance(); ]
+
 class Database {
 	private static _instance: Database;
 	private _redisClient: RedisClientType;

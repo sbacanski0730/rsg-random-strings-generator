@@ -17,6 +17,7 @@ const generateStringRequestSchema = v.object({
 		v.minLength(2, 'Minimal value for this property should be 3 or higher.'),
 		// NOTE: This validation is temporary
 		// TODO: refactor application to accepting values higher than 8
+
 		v.maxLength(8, 'Temporary application accepts max 8 characters '),
 	]),
 	combinations: v.number([
